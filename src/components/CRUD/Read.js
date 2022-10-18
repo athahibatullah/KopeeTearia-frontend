@@ -7,9 +7,9 @@ const Read = () => {
   const dispatch = useDispatch();
 
   const getAPIData = async () => {
-    const responseAPIData = await axios.get(`http://localhost:9000/get`);
-    const responseRegular = await axios.get(`http://localhost:9000/regular`);
-    const responseDiscount = await axios.get(`http://localhost:9000/discount`);
+    const responseAPIData = await axios.get(`http://localhost:8181/SpringKopeeTearia/get`);
+    const responseRegular = await axios.get(`http://localhost:8181/SpringKopeeTearia/regular`);
+    const responseDiscount = await axios.get(`http://localhost:8181/SpringKopeeTearia/discount`);
     return {
       APIData: responseAPIData.data,
       regularPrice: responseRegular.data,

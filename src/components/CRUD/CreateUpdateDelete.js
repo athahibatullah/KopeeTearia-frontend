@@ -35,7 +35,7 @@ const Create = () => {
       discounted: isDiscounted,
     };
     axios
-      .post(`http://localhost:9000/add`, dataJSON)
+      .post(`http://localhost:8181/SpringKopeeTearia/add`, dataJSON)
       .then(() => messageHandler(true, "success", "CREATE"))
       .catch(() => messageHandler(true, "failed", "CREATE"));
     // dispatch(addData(dataJSON));
@@ -65,7 +65,7 @@ const Create = () => {
     //   }
     // });
     axios
-      .delete(`http://localhost:9000/delete/${id}`)
+      .delete(`http://localhost:8181/SpringKopeeTearia/delete/${id}`)
       .then(() => messageHandler(true, "success", "DELETE"))
       .catch(() => messageHandler(true, "failed", "DELETE"));
   };
@@ -106,7 +106,7 @@ const Create = () => {
       discounted: isDiscountedUpdate,
     };
     axios
-      .put(`http://localhost:9000/update`, dataJSON)
+      .put(`http://localhost:8181/SpringKopeeTearia/update`, dataJSON)
       .then(() => {
         messageHandler(true, "success", "UPDATE");
       })

@@ -8,8 +8,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='*' element={<Error/>}/>
+        <Route path='/reactkopeetearia/' element={<Home/>}/>
+        <Route path='/reactkopeetearia/*' element={<Error/>}/>
       </Routes>
     </Router>
   );
