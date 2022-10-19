@@ -8,7 +8,7 @@ const Error = () => {
           <h1 className="card-title">ERROR</h1>
           <p>Page not found</p>
           <div className="card-actions">
-            <Link to={`/`}>
+            <Link to={`/reactkopeetearia/`}>
               <button className="btn">Back</button>
             </Link>
           </div>
