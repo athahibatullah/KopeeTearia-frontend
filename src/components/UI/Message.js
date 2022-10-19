@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const Message = () => {
-  const [showMessage, setShowMessage] = useState(false);
-  const [orderError, setOrderError] = useState(false);
   const selectorMessage = useSelector((state) => state.redux.message);
   const orderSuccess = (
     <>

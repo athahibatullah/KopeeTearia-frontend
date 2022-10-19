@@ -48,25 +48,6 @@ const DataSlice = createSlice({
       state.message.status = data.payload.status;
       state.message.operation = data.payload.operation;
     }
-    // updateData: (state, data) => {
-    //   state.  
-    // }
-    // addTotalPrice: (state, data) => {
-    //   if (data.payload.isDiscounted) {
-    //     const discountPrice =
-    //       parseFloat(data.payload.regularPrice) -
-    //       parseFloat(data.payload.regularPrice) * 0.25;
-    //     state.TotalPrice.discountPrice = parseFloat(state.TotalPrice.regularPrice) + discountPrice;
-    //   }
-    //   const regularPrice =
-    //     parseFloat(state.TotalPrice.regularPrice) +
-    //     parseFloat(data.payload.regularPrice);
-    //   state.TotalPrice.regularPrice = regularPrice;
-      
-    //   // else{
-    //   //   const discountPrice =
-    //   // }
-    // },
   },
 });
 

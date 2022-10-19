@@ -9,8 +9,6 @@ import {
   selectData,
   showMessage,
 } from "../Redux/DataSlice";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 
 const Create = () => {
   const [orderName, setOrderName] = useState("");
@@ -24,8 +22,8 @@ const Create = () => {
   const selectorAPIData = useSelector((state) => state.redux.APIData);
   const selectorPrice = useSelector((state) => state.redux.TotalPrice);
   const selectedData = useSelector((state) => state.redux.selected);
+  const selectorMenu = useSelector((state) => state.redux.Menu);
   const [showUpdate, setShowUpdate] = useState(false);
-  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const postData = () => {
@@ -34,36 +32,18 @@ const Create = () => {
       price: price,
       discounted: isDiscounted,
     };
-    axios
-      .post(`http://localhost:8181/SpringKopeeTearia/add`, dataJSON)
-      .then(() => messageHandler(true, "success", "CREATE"))
-      .catch(() => messageHandler(true, "failed", "CREATE"));
-    // dispatch(addData(dataJSON));
-    // dispatch(addTotalPrice({regularPrice: price, isDiscounted: isDiscounted}));
-    // dispatch(totalPrice)
-    resetHandler();
+    // if (menuValidation(dataJSON)) {
+      axios
+        .post(`http://localhost:8181/SpringKopeeTearia/add`, dataJSON)
+        .then(() => messageHandler(true, "success", "CREATE"))
+        .catch(() => messageHandler(true, "failed", "CREATE"));
+      resetHandler();
+    // } else {
+    //   messageHandler(true, "failed", "CREATE");
+    // }
   };
   const deleteDataHandler = (event, id) => {
     event.preventDefault();
-    // MySwal.fire({
-    //   title: "Are you sure?",
-    //   text: "You won't be able to revert this!",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonText: "Yes, delete it!",
-    //   cancelButtonText: "No, cancel!",
-    //   reverseButtons: true,
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     axios
-    //       .delete(`http://localhost:9000/delete/${id}`)
-    //       .then(() => messageHandler(true, "success", "DELETE"))
-    //       .then(() =>
-    //         MySwal.fire("Deleted!", "Your file has been deleted.", "success")
-    //       )
-    //       .catch(() => messageHandler(true, "failed", "DELETE"));
-    //   }
-    // });
     axios
       .delete(`http://localhost:8181/SpringKopeeTearia/delete/${id}`)
       .then(() => messageHandler(true, "success", "DELETE"))
@@ -82,10 +62,55 @@ const Create = () => {
     setIsDiscounted(false);
     reset();
   };
+  const menuValidation = (data) => {
+    const menuName = selectorMenu.map((menu) => menu.name);
+    if (menuName.includes(data.orderName)) {
+      if (
+        selectorMenu[menuName.indexOf(data.orderName)].price ===
+        parseFloat(data.price)
+      ) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  };
+  const message = (
+    type,
+    validRequired,
+    validLength,
+    validPattern,
+    minLength
+  ) => {
+    return (
+      <>
+        {validRequired && (
+          <p className="text-red-500" role="alert">
+            {type} is required
+          </p>
+        )}
+        {validLength && (
+          <p className="text-red-500" role="alert">
+            Minimum length of name is {minLength}
+          </p>
+        )}
+        {validPattern && (
+          <p className="text-red-500" role="alert">
+            {type} format is not correct
+          </p>
+        )}
+      </>
+    );
+  };
   const nameValidation = {
     required: true,
     minLength: 1,
     pattern: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
+  };
+  const floatValidation = {
+    required: true,
+    minLength: 1,
+    pattern: /^[1-9]\d*(\.\d+)?$/,
   };
   const showUpdateHandler = (event, val) => {
     event.preventDefault();
@@ -156,16 +181,32 @@ const Create = () => {
                       onChange={(e) => setOrderName(e.target.value)}
                       id="ordName"
                     />
+                    {errors.orderName?.type === "required" &&
+                      message("Order Item", true, false, false)}
+                    {errors.orderName?.type === "minLength" &&
+                      message(
+                        "Order Item",
+                        false,
+                        true,
+                        false,
+                        nameValidation.minLength
+                      )}
+                    {errors.orderName?.type === "pattern" &&
+                      message("Order Item", false, false, true)}
                   </td>
                   <td>
                     <input
                       className="input w-full max-w-lg border-black"
-                      {...register("price")}
+                      {...register("price", floatValidation)}
                       aria-invalid={errors.price ? "true" : "false"}
                       value={setValue("price", price)}
                       onChange={(e) => setPrice(e.target.value)}
                       id="ordPrice"
                     />
+                    {errors.price?.type === "required" &&
+                      message("Price", true, false, false)}
+                    {errors.price?.type === "pattern" &&
+                      message("Price", false, false, true)}
                   </td>
                   <td>
                     <input
@@ -251,6 +292,18 @@ const Create = () => {
                       onChange={(e) => setOrderNameUpdate(e.target.value)}
                       id="updName"
                     />
+                    {errors.orderNameUpdate?.type === "required" &&
+                      message("Order Item", true, false, false)}
+                    {errors.orderNameUpdate?.type === "minLength" &&
+                      message(
+                        "Order Item",
+                        false,
+                        true,
+                        false,
+                        nameValidation.minLength
+                      )}
+                    {errors.orderNameUpdate?.type === "pattern" &&
+                      message("Order Item", false, false, true)}
                   </td>
                   <td>
                     <input
